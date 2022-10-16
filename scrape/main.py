@@ -16,9 +16,10 @@ state = "new hampshire"
 search = GoogleSearch(terms, state)
 search.stop = 10
 search.exclude = "-inurl:facebook.com -inurl:tripadvisor.com -inurl:yelp.com -inurl:happycow.net " \
-                 "-inurl:businessinnewengland.com -inurl:npr.com -inurl:nhpr.com -inurl:boston.eater.com" \
-                 "-inurl:reddit.com -inurl:aroundconcord.com -inurl:wokq.com -inurl:visitconcord-nh.com" \
-                 "-inurl:wmur.com -inurl:nhanimalrights.org -inurl:godairyfree.org"
+                 "-inurl:businessinnewengland.com -inurl:npr.com -inurl:nhpr.org -inurl:https://boston.eater.com" \
+                 "-inurl:reddit.com -inurl:aroundconcord.com -inurl:wokq.com -inurl:https://visitconcord-nh.com" \
+                 "-inurl:wmur.com -inurl:nhanimalrights.org -inurl:godairyfree.org -inurl:949whom.com" \
+                 "-inurl:https://vrg.org"
 
 results = search.query()
 print(results)
@@ -37,23 +38,34 @@ for result in results:
         }
 
     except AttributeError or TypeError:
-        print(f"Error in {result}, trying different parameters......")
-        restaurant['title'] = soup.find("title").text
-        if restaurant['title']:
-            print("Success.")
+        print(f"Error in {result}")
 
-    data = {
-        "name": f'{restaurant["title"]}',
-        "description": f'{restaurant["description"]}',
-        "vegan": True,
-        "web": f'{restaurant["website"]}',
-        "email": None,
-        "phone": None,
-        "address": None,
-        "state": "new hampshire",
-        "city": "",
-        "zip": "",
-    }
+    if restaurant['title'] is None:
+        data = {
+            "name": "[restaurant name missing]",
+            "description": f'{restaurant["description"]}',
+            "vegan": True,
+            "web": f'{restaurant["website"]}',
+            "email": None,
+            "phone": None,
+            "address": None,
+            "state": "new hampshire",
+            "city": "",
+            "zip": "",
+        }
+    else:
+        data = {
+            "name": f'{restaurant["title"]}',
+            "description": f'{restaurant["description"]}',
+            "vegan": True,
+            "web": f'{restaurant["website"]}',
+            "email": None,
+            "phone": None,
+            "address": None,
+            "state": "new hampshire",
+            "city": "",
+            "zip": "",
+        }
 
     response = r.post(url=api_url, json=data)
     print(response.status_code)
