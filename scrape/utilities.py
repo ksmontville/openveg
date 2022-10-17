@@ -7,7 +7,7 @@ load_dotenv()
 api_url = os.environ.get("API_URL")
 
 # PUT call to API to change ["vegan"] bool
-put_ids = []
+put_ids = [139,145,160,165]
 restaurants_to_change = []
 
 # Get restaurants by their id, append to restaurants to be changed
@@ -36,7 +36,7 @@ for restaurant in restaurants_to_change:
 
 
 # DELETE call to API
-delete_ids = []
+delete_ids = [177]
 for id in delete_ids:
     response = r.delete(f"{api_url}/id/{id}")
     print(response.status_code, response.content)
