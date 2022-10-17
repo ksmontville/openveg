@@ -47,8 +47,7 @@ def get_restaurants(skip: int = 0, limit: int = 100, db: Session = Depends(get_d
 
 
 @app.post('/restaurants/', response_model=schema.Restaurant, status_code=201)
-def create_restaurant(restaurant: schema.RestaurantCreate, db: Session = Depends(get_db), skip: int = 0, limit: int = 100,
-                      state: str | None = None, city: str | None = None, zip: str | None = None):
+def create_restaurant(restaurant: schema.RestaurantCreate, db: Session = Depends(get_db)):
     existing_restaurants = utils.get_restaurant_by_name(db, restaurant_name=restaurant.name)
     if existing_restaurants:
         for some_restaurant in existing_restaurants:

@@ -19,9 +19,17 @@ def _update_restaurant(old_restaurant, new_restaurant):
 
 def get_restaurants(db: Session, skip: int = 0, limit: int = 100,
                     state: str | None = None, city: str | None = None, zip: str | None = None,
-                    vegan: bool | None = False):
+                    vegan: bool | None = True):
 
-    if state and city:
+    if state:
+        if vegan:
+            return db.query(models.Restaurant).filter(
+                models.Restaurant.state == state, models.Restaurant.vegan
+            ).offset(skip).limit(limit).all()
+
+        return db.query(models.Restaurant).filter(models.Restaurant.state == state).offset(skip).limit(limit).all()
+
+    elif state and city:
         if vegan:
             return db.query(models.Restaurant).filter(
                 models.Restaurant.state == state, models.Restaurant.city == city, models.Restaurant.vegan

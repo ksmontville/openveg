@@ -8,25 +8,24 @@ from bs4 import BeautifulSoup
 from search.google_search import GoogleSearch
 
 # This script works best on websites that use og: (Facebook OpenGraph) tags in their <head>.
-# Change "state" variables when copy/pasting
-# Change search.exclude attribute for specific filtering
-# Need to search by specific region of state, in cases where large metro dominates
-
 # Need to find a more efficient way to filter search results
 
 load_dotenv()
 
 api_url = os.environ.get("API_URL")
 
-state = ""
+state = "new hampshire"
 terms = f"vegan restaurant {state}"
 
 search = GoogleSearch(terms)
 search.stop = 50
-search.exclude = "-inurl:facebook.com -inurl:tripadvisor.com -inurl:yelp.com -inurl:happycow.net -inurl:npr.com" \
-                 " -inurl:reddit.com -inurl:wikipedia.com -inurl:godairyfree.com -inurl:vrg.org -inurl:vegnews.com" \
-                 " -inurl:pinterest.com -inurl:opentable.com -inurl:bloomberg.com -inurl:thrillist.com" \
-                 " -inurl:michelin.com"
+search.exclude = "-inurl:facebook.com -inurl:tripadvisor.com -inurl:yelp.com -inurl:happycow.net" \
+                 " -inurl:businessinnewengland.com -inurl:npr.com -inurl:nhpr.org -inurl:boston.eater.com" \
+                 " -inurl:reddit.com -inurl:aroundconcord.com -inurl:wokq.com -inurl:visitconcord-nh.com" \
+                 " -inurl:wmur.com -inurl:nhanimalrights.org -inurl:godairyfree.org -inurl:949whom.com -inurl:vrg.org" \
+                 " -inurl:nhtasty.com -inurl:portsmouthnh.com -inurl:opentable.com -inurl:vegnews.com -inurl:news.com" \
+                 " -inurl:pinterest.com -inurl:newenglandwithlove.com -inurl:sirved.com -inurl:tasteoftheseacost.com" \
+                 " -inurl:zomato.com -inurl:wikipedia.org -inurl:stoutheart.com -inurl:eatthis.com"
 
 results = search.query()
 
@@ -89,7 +88,7 @@ for result in results:
         "email": None,
         "phone": None,
         "address": None,
-        "state": "",
+        "state": "new hampshire",
         "city": "",
         "zip": "",
     }

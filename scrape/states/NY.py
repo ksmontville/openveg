@@ -8,25 +8,23 @@ from bs4 import BeautifulSoup
 from search.google_search import GoogleSearch
 
 # This script works best on websites that use og: (Facebook OpenGraph) tags in their <head>.
-# Change "state" variables when copy/pasting
-# Change search.exclude attribute for specific filtering
 # Need to search by specific region of state, in cases where large metro dominates
-
 # Need to find a more efficient way to filter search results
 
 load_dotenv()
 
 api_url = os.environ.get("API_URL")
 
-state = ""
-terms = f"vegan restaurant {state}"
+state = "new york"
+terms = f"vegan restaurant upstate {state}"
 
 search = GoogleSearch(terms)
 search.stop = 50
 search.exclude = "-inurl:facebook.com -inurl:tripadvisor.com -inurl:yelp.com -inurl:happycow.net -inurl:npr.com" \
                  " -inurl:reddit.com -inurl:wikipedia.com -inurl:godairyfree.com -inurl:vrg.org -inurl:vegnews.com" \
-                 " -inurl:pinterest.com -inurl:opentable.com -inurl:bloomberg.com -inurl:thrillist.com" \
-                 " -inurl:michelin.com"
+                 " -inurl:pinterest.com -inurl:opentable.com -inurl:bloomberg.com -inurl:theinfatuation.com" \
+                 " -inurl:timeout.com -inurl:veggieusa.com -inurl:magazine.com -inurl:thrillist.com" \
+                 " -inurl:grubstreet.com -inurl:veggiesabroad.com -inurl:michelin.com"
 
 results = search.query()
 
@@ -42,19 +40,31 @@ for result in results:
         soup = BeautifulSoup(page.content, "html.parser")
 
         if soup.find("meta", property="og:title") is not None:
-            title = soup.find("meta", property="og:title").attrs["content"]
+            try:
+                title = soup.find("meta", property="og:title").attrs["content"]
+            except KeyError:
+                print(f"Key error [title] in {result}")
+                title = soup.find("meta", property="og:title")
         elif soup.find("title") is not None:
             title = soup.find("title").text
         else:
             title = f"[restaurant name for {result} invalid]"
 
         if soup.find("meta", property="og:description") is not None:
-            description = soup.find("meta", property="og:title").attrs["content"]
+            try:
+                description = soup.find("meta", property="og:description").attrs["content"]
+            except KeyError:
+                print(f"Key error [description] in {result}")
+                description = soup.find("meta", property="og:description")
         else:
             description = f"[restaurant description for {result} invalid]"
 
         if soup.find("meta", property="og:url") is not None:
-            url = soup.find("meta", property="og:url").attrs["content"]
+            try:
+                url = soup.find("meta", property="og:url").attrs["content"]
+            except KeyError:
+                print(f"Key error [url] in {result}")
+                url = soup.find("meta", property="og:url")
         else:
             url = f"{result}"
 
@@ -89,7 +99,7 @@ for result in results:
         "email": None,
         "phone": None,
         "address": None,
-        "state": "",
+        "state": "new york",
         "city": "",
         "zip": "",
     }
