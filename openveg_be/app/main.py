@@ -13,7 +13,9 @@ app = FastAPI()
 origins = [
     'https://openveg-api.herokuapp.com/',
     'http://localhost:5173/',
-    'https://localhost:8000'
+    'https://localhost:8000',
+    'https://localhost:3000',
+    'http://localhost:3000'
 ]
 
 app.add_middleware(

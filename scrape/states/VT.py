@@ -16,7 +16,12 @@ from search.google_search import GoogleSearch
 
 load_dotenv()
 
+# Heroku DB
 api_url = os.environ.get("API_URL")
+# Local DB for backup, INITIALIZE SERVER BEFORE RUNNING SCRIPT
+local_host = 'http://localhost:8000/restaurants'
+
+urls = [api_url, local_host]
 
 state = "vermont"
 terms = f"vegan restaurant {state}"
@@ -94,6 +99,7 @@ for result in results:
         "zip": "",
     }
 
-    response = r.post(url=api_url, json=data)
-    print(response.status_code, response.content)
-    time.sleep(4)
+    for url in urls:
+        response = r.post(url=url, json=data)
+        print(f"POST to {url} {response.status_code}\n{response.content}")
+        time.sleep(4)
