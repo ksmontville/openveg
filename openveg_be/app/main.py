@@ -11,8 +11,9 @@ models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 origins = [
+    'https://openveg.app/',
+    'https://www.openveg.app/',
     'https://openveg.netlify.app/',
-    'https://openveg-api.herokuapp.com/',
     'http://localhost:5173/',
     'https://localhost:8000',
     'https://localhost:3000',
@@ -21,7 +22,7 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

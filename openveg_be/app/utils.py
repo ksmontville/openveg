@@ -15,6 +15,7 @@ def _update_restaurant(old_restaurant, new_restaurant):
     old_restaurant.state = new_restaurant.state
     old_restaurant.city = new_restaurant.city
     old_restaurant.zip = new_restaurant.zip
+    old_restaurant.id = new_restaurant.id
 
 
 def get_restaurants(db: Session, skip: int = 0, limit: int = 100,

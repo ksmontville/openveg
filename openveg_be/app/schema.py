@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from typing import Optional
 
 
 class RestaurantBase(BaseModel):
@@ -21,7 +20,7 @@ class RestaurantCreate(RestaurantBase):
 
 
 class RestaurantPut(RestaurantBase):
-    pass
+    id: int
 
 
 class Restaurant(RestaurantBase):
